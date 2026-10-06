@@ -1,0 +1,193 @@
+{
+  "commands": [
+    {
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "tools/momentum_scanner/requirements-dev.txt"
+      ],
+      "id": "dependencies",
+      "outputs": [],
+      "phase": "setup",
+      "timeoutSeconds": 600,
+      "tool": "python"
+    },
+    {
+      "args": [
+        "-m",
+        "pytest",
+        "tools/momentum_scanner/tests",
+        "-q"
+      ],
+      "id": "unit",
+      "outputs": [],
+      "parser": "pytest",
+      "phase": "test",
+      "timeoutSeconds": 300,
+      "tool": "python"
+    }
+  ],
+  "declaredSkips": [],
+  "mockedServices": [
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/conftest.py",
+        "tools/momentum_scanner/tests/test_edgar_rss.py",
+        "tools/momentum_scanner/tests/test_ticker_cik.py",
+        "tools/momentum_scanner/tests/test_edgar_prejudge.py",
+        "tools/momentum_scanner/tests/test_catalyst_evaluator.py",
+        "tools/momentum_scanner/tests/test_catalyst_news.py",
+        "tools/momentum_scanner/tests/test_catalyst_raise_systemic.py",
+        "tools/momentum_scanner/tests/test_evaluate_news_reorder.py",
+        "tools/momentum_scanner/tests/test_evaluate_news_softened.py",
+        "tools/momentum_scanner/tests/test_roundup_filter.py",
+        "tools/momentum_scanner/tests/test_movers_scan_edgar.py",
+        "tools/momentum_scanner/tests/test_run_premarket_scan.py",
+        "tools/momentum_scanner/tests/test_public_source_config.py",
+        "tools/momentum_scanner/tests/test_judge.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py",
+        "tools/momentum_scanner/tests/test_credential_error_redaction.py",
+        "tools/momentum_scanner/tests/test_edgar_archive_url_hardening.py"
+      ],
+      "method": "Tests patch requests.get or the EDGAR getter, or inject synthetic ticker-to-CIK maps and filing detail/body callables, and an autouse fixture supplies a synthetic SEC contact header; no request reaches the SEC.",
+      "service": "SEC EDGAR filing feed, ticker map and filing documents"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_schwab_data.py",
+        "tools/momentum_scanner/tests/test_schwab_quotes.py",
+        "tools/momentum_scanner/tests/test_gap_scanner.py",
+        "tools/momentum_scanner/tests/test_movers_scan_run.py",
+        "tools/momentum_scanner/tests/test_movers_scan_edgar.py",
+        "tools/momentum_scanner/tests/test_judge_runtime.py",
+        "tools/momentum_scanner/tests/test_daemon_heartbeat.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py",
+        "tools/momentum_scanner/tests/test_run_premarket_scan.py",
+        "tools/momentum_scanner/tests/test_credential_error_redaction.py"
+      ],
+      "method": "Tests inject fake HTTP sessions and fixed token callables into the quote and price-history clients, or patch batch quotes, movers discovery and candidate scanning with synthetic results.",
+      "service": "Schwab market-data API (quotes and price history)"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_public_source_config.py",
+        "tools/momentum_scanner/tests/test_schwab_data.py",
+        "tools/momentum_scanner/tests/test_schwab_quotes.py",
+        "tools/momentum_scanner/tests/test_movers_scan_run.py",
+        "tools/momentum_scanner/tests/test_judge_runtime.py",
+        "tools/momentum_scanner/tests/test_movers_scan_edgar.py",
+        "tools/momentum_scanner/tests/test_daemon_heartbeat.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests register synthetic in-memory provider modules or patch the module import, and pass fixed token callables, so no credential store or OAuth flow is used.",
+      "service": "Market-data token provider module"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_finnhub_news.py",
+        "tools/momentum_scanner/tests/test_judge.py",
+        "tools/momentum_scanner/tests/test_run_premarket_scan.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py",
+        "tools/momentum_scanner/tests/test_credential_error_redaction.py"
+      ],
+      "method": "Tests inject fake sessions with canned JSON routes, remove the API key from the environment, or replace the news client and aggregator with synthetic fakes.",
+      "service": "Finnhub news API"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_alpaca_news.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py",
+        "tools/momentum_scanner/tests/test_credential_error_redaction.py"
+      ],
+      "method": "Tests inject fake sessions that return synthetic news pages, use stub clients for the fallback wrapper, and remove the key variables from the environment.",
+      "service": "Alpaca news API"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_catalyst_evaluator.py",
+        "tools/momentum_scanner/tests/test_qwen3_judge.py",
+        "tools/momentum_scanner/tests/test_shadow_rationale_and_log_dedupe.py",
+        "tools/momentum_scanner/tests/test_judge_shadow_wiring.py",
+        "tools/momentum_scanner/tests/test_run_premarket_scan.py",
+        "tools/momentum_scanner/tests/test_catalyst_news.py",
+        "tools/momentum_scanner/tests/test_evaluate_news_reorder.py",
+        "tools/momentum_scanner/tests/test_evaluate_news_softened.py",
+        "tools/momentum_scanner/tests/test_roundup_filter.py",
+        "tools/momentum_scanner/tests/test_judge.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py",
+        "tools/momentum_scanner/tests/test_judge_batch.py",
+        "tools/momentum_scanner/tests/test_judge_runtime.py",
+        "tools/momentum_scanner/tests/test_ranking_cap.py",
+        "tools/momentum_scanner/tests/test_shadow_judge.py"
+      ],
+      "method": "Tests patch the generate helpers or requests.post in the judge modules, or inject synthetic news, filing and batch judge callables in place of the default local-model judges, with synthetic replies; no Ollama server is contacted.",
+      "service": "Ollama local model server (Gemma judge and optional qwen3 shadow)"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_haiku_judge.py",
+        "tools/momentum_scanner/tests/test_judge_shadow_wiring.py",
+        "tools/momentum_scanner/tests/test_shadow_rationale_and_log_dedupe.py",
+        "tools/momentum_scanner/tests/test_shadow_judge.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests patch the Haiku generate helper and client with synthetic replies, inject synthetic shadow callables into the shadow runtime, and use obviously fake key strings only to test redaction.",
+      "service": "Anthropic Messages API (optional Haiku shadow judge)"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_fundamentals_fetch.py",
+        "tools/momentum_scanner/tests/test_fundamentals.py",
+        "tools/momentum_scanner/tests/test_fundamentals_refresh.py",
+        "tools/momentum_scanner/tests/test_gap_scanner.py",
+        "tools/momentum_scanner/tests/test_movers_tier2.py",
+        "tools/momentum_scanner/tests/test_movers_scan_run.py",
+        "tools/momentum_scanner/tests/test_movers_scan_edgar.py",
+        "tools/momentum_scanner/tests/test_judge_runtime.py",
+        "tools/momentum_scanner/tests/test_near_miss.py",
+        "tools/momentum_scanner/tests/test_daemon_heartbeat.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests patch yfinance.Ticker or the float-fetch helper, or pass synthetic float-fetch callables and in-memory caches.",
+      "service": "Yahoo Finance float data via yfinance"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_universe_fetch.py",
+        "tools/momentum_scanner/tests/test_universe.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests pass fake sessions or synthetic fetch callables that return small pipe-delimited directories, or patch universe loading.",
+      "service": "Nasdaq Trader symbol directory"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_daemon_clock.py",
+        "tools/momentum_scanner/tests/test_public_source_config.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests pass synthetic holiday callables, register in-memory calendar modules, or patch the module import and the session-mode function.",
+      "service": "Market holiday calendar module"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_rate_gate.py",
+        "tools/momentum_scanner/tests/test_public_source_config.py",
+        "tools/momentum_scanner/tests/test_movers_daemon.py"
+      ],
+      "method": "Tests use a fake limiter object, register synthetic limiter modules, or patch the limiter loader.",
+      "service": "Market-data rate limiter module"
+    },
+    {
+      "fixtures": [
+        "tools/momentum_scanner/tests/test_calibrate_min_score_live.py",
+        "tools/momentum_scanner/tests/test_public_source_config.py"
+      ],
+      "method": "Tests install synthetic cost callbacks through in-memory modules or by patching the cached model; no cost algorithm is included or exercised.",
+      "service": "Trade-cost model module"
+    }
+  ],
+  "schema": "portfolio-test-plan-v1"
+}

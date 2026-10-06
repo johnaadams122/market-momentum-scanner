@@ -1,0 +1,10 @@
+# Local environments, runtime state and generated output
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+state/
+out/
+*.log
+*.jsonl
+.portfolio-ci/
